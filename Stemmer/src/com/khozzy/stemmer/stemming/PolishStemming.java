@@ -16,7 +16,6 @@ public class PolishStemming {
     final static DictionaryLookup dl = new DictionaryLookup(polish);
 
     public static String process(final String sentence) {
-
         StringBuilder processed = new StringBuilder();
         final String[] words = sentence
                 .toLowerCase()

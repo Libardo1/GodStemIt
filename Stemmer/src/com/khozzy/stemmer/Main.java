@@ -24,7 +24,7 @@ public class Main {
         do {
             sentences = dao.getNotProcessedStatements(BATCH_SIZE);
             sentences
-                    .parallelStream()
+                    .stream()
                     .forEach(s -> {
                         final String processed = PolishStemming.process(s.getOriginal());
 
