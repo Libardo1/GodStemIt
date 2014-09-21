@@ -15,7 +15,7 @@ public class PolishStemming {
     final static Dictionary polish = Dictionary.getForLanguage("pl");
     final static DictionaryLookup dl = new DictionaryLookup(polish);
 
-    public static String process(final String sentence) {
+    public static synchronized String process(final String sentence) {
         StringBuilder processed = new StringBuilder();
         final String[] words = sentence
                 .toLowerCase()

@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Main {
 
-    private static final int BATCH_SIZE = 3;
+    private static final int BATCH_SIZE = 5;
 
     public static void main(String[] args) {
         final DAO dao = new DAO();
@@ -23,8 +23,9 @@ public class Main {
 
         do {
             sentences = dao.getNotProcessedStatements(BATCH_SIZE);
+
             sentences
-                    .stream()
+                    .parallelStream()
                     .forEach(s -> {
                         final String processed = PolishStemming.process(s.getOriginal());
 
