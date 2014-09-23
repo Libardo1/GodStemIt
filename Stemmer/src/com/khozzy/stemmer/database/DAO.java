@@ -2,8 +2,8 @@ package com.khozzy.stemmer.database;
 
 import com.khozzy.stemmer.domain.Sentence;
 
+import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,20 +13,21 @@ import java.util.Set;
 
 public class DAO {
 
-    private static final String HOST = "localhost";
-    private static final int PORT = 3306;
-    private static final String DB = "sentiment_analysis";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private DataSource datasource;
 
-    private static final String URL = String.format(
-            "jdbc:mysql://%s:%d/%s?user=%s&password=%s&characterEncoding=utf-8", HOST, PORT, DB, USER, PASSWORD);
+    public DAO() {
+        try {
+            datasource = DataSource.getInstance();
+        } catch (IOException | SQLException e) {
+            System.err.println("Can't obtain data source " + e.getMessage());
+        }
+    }
 
     public Set<Sentence> getNotProcessedStatements(int limit) {
         Set<Sentence> sentences = new HashSet<>();
 
         try {
-            final Connection connection = DriverManager.getConnection(URL);
+            final Connection connection = datasource.getConnection();
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0 LIMIT ?");
             statement.setInt(1, limit);
 
@@ -53,7 +54,7 @@ public class DAO {
     public int countRemainingToProcess() {
 
         try {
-            final Connection connection = DriverManager.getConnection(URL);
+            final Connection connection = datasource.getConnection();
             final Statement statement = connection.createStatement();
             final ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
 
@@ -73,7 +74,7 @@ public class DAO {
     public void updateSentence(int id, String processed, boolean error) {
 
         try {
-            final Connection connection = DriverManager.getConnection(URL);
+            final Connection connection = datasource.getConnection();
             final PreparedStatement statement = connection.prepareStatement("UPDATE sentiment_analysis.entry SET processed = ?, error = ? WHERE id = ?");
 
             statement.setString(1, processed);
