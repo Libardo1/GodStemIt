@@ -12,5 +12,8 @@ hs_err_pid*
 
 Stemmer/out
 Stemmer/Stemmer.iml
+Stemmer/target
 Analyze/.Rhistory
 .idea
+*.iml
+
