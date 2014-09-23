@@ -29,14 +29,18 @@ public class MysqlDAO implements DAO {
     }
 
     public Set<Sentence> getNotProcessedStatements(int limit) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
         Set<Sentence> sentences = new HashSet<>();
 
         try {
-            final Connection connection = datasource.getConnection();
-            final PreparedStatement statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0 LIMIT ?");
+            connection = datasource.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0 LIMIT ?");
             statement.setInt(1, limit);
 
-            final ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 sentences.add(new Sentence(
@@ -46,51 +50,66 @@ public class MysqlDAO implements DAO {
                         resultSet.getBoolean("error")
                 ));
             }
-
-            resultSet.close();
-            connection.close();
         } catch (SQLException e) {
             logger.error("Blad podczas pobierania zdan do przetworzenia", e);
+        } finally {
+            try {
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (Exception e) {}
         }
 
         return sentences;
     }
 
     public int countRemainingToProcess() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
 
         try {
-            final Connection connection = datasource.getConnection();
-            final Statement statement = connection.createStatement();
-            final ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
 
             while (resultSet.next()) {
                 return resultSet.getInt("COUNT(*)");
             }
 
-            resultSet.close();
-            connection.close();
         } catch (SQLException e) {
             logger.error("Blad podczas liczenia pozostaly zdan", e);
+        } finally {
+            try {
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (Exception e) {}
         }
 
         return 0;
     }
 
     public void updateSentence(int id, String processed, boolean error) {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
         try {
-            final Connection connection = datasource.getConnection();
-            final PreparedStatement statement = connection.prepareStatement("UPDATE sentiment_analysis.entry SET processed = ?, error = ? WHERE id = ?");
+            connection = datasource.getConnection();
+            statement = connection.prepareStatement("UPDATE sentiment_analysis.entry SET processed = ?, error = ? WHERE id = ?");
 
             statement.setString(1, processed);
             statement.setBoolean(2, error);
             statement.setInt(3, id);
 
             statement.executeUpdate();
-            connection.close();
-
         } catch (SQLException e) {
             logger.error("Blad podczas akutalizacji zdania o id " + id, e);
+        } finally {
+            try {
+                connection.close();
+                statement.close();
+            } catch (Exception e) {}
         }
     }
 }

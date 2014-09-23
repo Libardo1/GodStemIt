@@ -46,6 +46,6 @@ public class Main {
 
         time = System.currentTimeMillis() - start;
 
-        logger.info(String.format("Zakończono. Całkowity czas: %d ms", time));
+        logger.info(String.format("Zakończono. Całkowity czas: %.3f s", (double) time/1000));
     }
 }
