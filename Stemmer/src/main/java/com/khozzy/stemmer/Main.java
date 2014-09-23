@@ -1,6 +1,7 @@
 package com.khozzy.stemmer;
 
 import com.khozzy.stemmer.database.DAO;
+import com.khozzy.stemmer.database.MysqlDAO;
 import com.khozzy.stemmer.domain.Sentence;
 import com.khozzy.stemmer.stemming.PolishStemming;
 
@@ -11,7 +12,7 @@ public class Main {
     private static final int BATCH_SIZE = 5;
 
     public static void main(String[] args) {
-        final DAO dao = new DAO();
+        final DAO dao = new MysqlDAO();
         final int total = dao.countRemainingToProcess();
         long start, time;
 
