@@ -3,6 +3,7 @@ package com.khozzy.stemmer.database.mysql;
 import com.khozzy.stemmer.database.DAO;
 import com.khozzy.stemmer.database.DataSource;
 import com.khozzy.stemmer.domain.Sentence;
+import org.apache.log4j.Logger;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MysqlDAO implements DAO {
+    private static final Logger logger = Logger.getLogger(MysqlDAO.class);
 
     private DataSource datasource;
 
@@ -22,7 +24,7 @@ public class MysqlDAO implements DAO {
         try {
             datasource = DataSource.getInstance();
         } catch (IOException | SQLException | PropertyVetoException e) {
-            System.err.println("Can't obtain data source " + e.getMessage());
+            logger.error("Nie mozna uzyskac dostepu do zrodla danych", e);
         }
     }
 
@@ -48,7 +50,7 @@ public class MysqlDAO implements DAO {
             resultSet.close();
             connection.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error("Blad podczas pobierania zdan do przetworzenia", e);
         }
 
         return sentences;
@@ -68,7 +70,7 @@ public class MysqlDAO implements DAO {
             resultSet.close();
             connection.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error("Blad podczas liczenia pozostaly zdan", e);
         }
 
         return 0;
@@ -88,8 +90,7 @@ public class MysqlDAO implements DAO {
             connection.close();
 
         } catch (SQLException e) {
-            System.err.println(String.format("Błąd podczas aktualizacji zdania o id %d", id));
-            System.err.println(e.getMessage());
+            logger.error("Blad podczas akutalizacji zdania o id " + id, e);
         }
     }
 }
