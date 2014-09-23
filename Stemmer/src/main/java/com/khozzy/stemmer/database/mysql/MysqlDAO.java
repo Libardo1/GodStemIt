@@ -1,7 +1,10 @@
-package com.khozzy.stemmer.database;
+package com.khozzy.stemmer.database.mysql;
 
+import com.khozzy.stemmer.database.DAO;
+import com.khozzy.stemmer.database.DataSource;
 import com.khozzy.stemmer.domain.Sentence;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +21,7 @@ public class MysqlDAO implements DAO {
     public MysqlDAO() {
         try {
             datasource = DataSource.getInstance();
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | PropertyVetoException e) {
             System.err.println("Can't obtain data source " + e.getMessage());
         }
     }

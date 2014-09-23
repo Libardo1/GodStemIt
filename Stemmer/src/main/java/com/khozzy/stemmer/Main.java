@@ -1,7 +1,7 @@
 package com.khozzy.stemmer;
 
 import com.khozzy.stemmer.database.DAO;
-import com.khozzy.stemmer.database.MysqlDAO;
+import com.khozzy.stemmer.database.mysql.MysqlDAO;
 import com.khozzy.stemmer.domain.Sentence;
 import com.khozzy.stemmer.stemming.PolishStemming;
 
