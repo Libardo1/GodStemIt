@@ -28,6 +28,14 @@ public class Sentence {
         return original;
     }
 
+    public String getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(String processed) {
+        this.processed = processed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

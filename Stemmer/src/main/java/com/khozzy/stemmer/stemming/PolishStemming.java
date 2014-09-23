@@ -1,8 +1,10 @@
 package com.khozzy.stemmer.stemming;
 
+import com.khozzy.stemmer.domain.Sentence;
 import morfologik.stemming.Dictionary;
 import morfologik.stemming.DictionaryLookup;
 import morfologik.stemming.WordData;
+import org.apache.log4j.Logger;
 
 import java.lang.Object;
 import java.util.List;
@@ -13,15 +15,19 @@ public class PolishStemming {
 
     private final static Object LOCK = new Object() {};
     private final static Pattern UNDESIRABLES = Pattern.compile("[,.;!?(){}\\[\\]<>%]");
+    private static final Logger logger = Logger.getLogger(PolishStemming.class);
 
     private final static Dictionary polish = Dictionary.getForLanguage("pl");
     private final static DictionaryLookup dl = new DictionaryLookup(polish);
 
-    public static String process(final String sentence) {
+    public static Sentence process(final Sentence sentence) {
         synchronized (LOCK) {
+            logger.debug("[START] Stemming zdania o id: " + sentence.getId());
+
             StringBuilder processed = new StringBuilder();
 
             final String[] words = sentence
+                    .getOriginal()
                     .toLowerCase()
                     .split(" ");
 
@@ -38,7 +44,11 @@ public class PolishStemming {
                         }
                     });
 
-            return processed.toString().trim();
+            sentence.setProcessed(processed.toString().trim());
+
+            logger.debug("[STOP] Stemming zdania o id: " + sentence.getId());
+
+            return sentence;
         }
     }
 }
