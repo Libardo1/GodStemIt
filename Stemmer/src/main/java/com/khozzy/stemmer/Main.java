@@ -7,42 +7,33 @@ import com.khozzy.stemmer.stemming.PolishStemming;
 import org.apache.log4j.Logger;
 
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class);
-    private static final int BATCH_SIZE = 5;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         final DAO dao = new MysqlDAO();
-        final int total = dao.countRemainingToProcess();
         long start, time;
 
-        Set<Sentence> sentences;
+        Set<Sentence> sentences = dao.getNotProcessedStatements();
+        final int total = sentences.size();
 
         logger.info(String.format("Ilość zdań do przetworzenia: %d", total));
         logger.info(String.format("Liczba dostępnych procesorów: %d", Runtime.getRuntime().availableProcessors()));
 
         start = System.currentTimeMillis();
 
-        do {
-            sentences = dao.getNotProcessedStatements(BATCH_SIZE);
+        CountDownLatch latch = new CountDownLatch(total);
+        ExecutorService executor = Executors.newFixedThreadPool(16);
+        sentences.forEach(s -> executor.submit(new PolishStemming(dao, latch, s)));
 
-            sentences
-                    .parallelStream()
-                    .forEach(s -> {
-                        logger.debug(String.format("[%d] Watek zarezerwowany ", s.getId()));
-                        final Sentence processed = PolishStemming.process(s);
-
-                        if (processed != null) {
-                            dao.updateSentence(s.getId(), s.getProcessed(), false);
-                        } else {
-                            dao.updateSentence(s.getId(), null, true);
-                        }
-                        logger.debug(String.format("[%d] Watek zwolniony ", s.getId()));
-                    });
-
-        } while (sentences.size() > 0);
+        executor.shutdown();
+        latch.await();
 
         time = System.currentTimeMillis() - start;
 

@@ -11,12 +11,11 @@ import java.util.Properties;
 
 public class DataSource {
 
-    private Properties properties;
     private ComboPooledDataSource cpds;
     private static DataSource datasource;
 
     private DataSource() throws IOException, SQLException, PropertyVetoException {
-        properties = Utils.readProperties("database.properties");
+        Properties properties = Utils.readProperties("database.properties");
 
         cpds = new ComboPooledDataSource();
 

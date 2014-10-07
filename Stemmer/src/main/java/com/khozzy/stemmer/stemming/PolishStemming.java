@@ -1,54 +1,64 @@
 package com.khozzy.stemmer.stemming;
 
+import com.khozzy.stemmer.database.DAO;
 import com.khozzy.stemmer.domain.Sentence;
 import morfologik.stemming.Dictionary;
 import morfologik.stemming.DictionaryLookup;
 import morfologik.stemming.WordData;
 import org.apache.log4j.Logger;
 
-import java.lang.Object;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class PolishStemming {
+public class PolishStemming implements Runnable {
 
-    private final static Object LOCK = new Object() {};
+    private final static Dictionary dictionary = Dictionary.getForLanguage("pl");
     private final static Pattern UNDESIRABLES = Pattern.compile("[,.;!?(){}\\[\\]<>%]");
     private static final Logger logger = Logger.getLogger(PolishStemming.class);
 
-    private final static Dictionary polish = Dictionary.getForLanguage("pl");
-    private final static DictionaryLookup dl = new DictionaryLookup(polish);
+    private DAO dao;
+    private CountDownLatch latch;
+    private Sentence sentence;
 
-    public static Sentence process(final Sentence sentence) {
-        synchronized (LOCK) {
-            logger.debug("[START] Stemming zdania o id: " + sentence.getId());
+    public PolishStemming(DAO dao, CountDownLatch latch, Sentence sentence) {
+        this.dao = dao;
+        this.latch = latch;
+        this.sentence = sentence;
+    }
 
-            StringBuilder processed = new StringBuilder();
+    @Override
+    public void run() {
+        logger.debug("[START] Stemming zdania o id: " + sentence.getId());
 
-            final String[] words = sentence
-                    .getOriginal()
-                    .toLowerCase()
-                    .split(" ");
+        StringBuilder processed = new StringBuilder();
+        final DictionaryLookup dl = new DictionaryLookup(dictionary);
 
-            Stream
-                    .of(words)
-                    .forEach(w -> {
-                        w = UNDESIRABLES.matcher(w).replaceAll("");
+        final String[] words = sentence
+                .getOriginal()
+                .toLowerCase()
+                .split(" ");
 
-                        List<WordData> wordList = dl.lookup(w);
+        Stream
+                .of(words)
+                .forEach(w -> {
+                    w = UNDESIRABLES.matcher(w).replaceAll("");
 
-                        if (!wordList.isEmpty()) {
-                            processed.append(wordList.get(0).getStem());
-                            processed.append(" ");
-                        }
-                    });
+                    List<WordData> wordList = dl.lookup(w);
 
-            sentence.setProcessed(processed.toString().trim());
+                    if (!wordList.isEmpty()) {
+                        processed.append(wordList.get(0).getStem());
+                        processed.append(" ");
+                    }
+                });
 
-            logger.debug("[STOP] Stemming zdania o id: " + sentence.getId());
+        sentence.setProcessed(processed.toString().trim());
 
-            return sentence;
-        }
+        dao.updateSentence(sentence);
+
+        latch.countDown();
+
+        logger.debug("[STOP] Stemming zdania o id: " + sentence.getId());
     }
 }

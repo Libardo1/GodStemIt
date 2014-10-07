@@ -28,7 +28,7 @@ public class MysqlDAO implements DAO {
         }
     }
 
-    public Set<Sentence> getNotProcessedStatements(int limit) {
+    public Set<Sentence> getNotProcessedStatements() {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -37,8 +37,7 @@ public class MysqlDAO implements DAO {
 
         try {
             connection = datasource.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0 LIMIT ?");
-            statement.setInt(1, limit);
+            statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
 
             resultSet = statement.executeQuery();
 
@@ -63,48 +62,20 @@ public class MysqlDAO implements DAO {
         return sentences;
     }
 
-    public int countRemainingToProcess() {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = datasource.getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT COUNT(*) FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
-
-            while (resultSet.next()) {
-                return resultSet.getInt("COUNT(*)");
-            }
-
-        } catch (SQLException e) {
-            logger.error("Blad podczas liczenia pozostaly zdan", e);
-        } finally {
-            try {
-                connection.close();
-                statement.close();
-                resultSet.close();
-            } catch (Exception e) {}
-        }
-
-        return 0;
-    }
-
-    public void updateSentence(int id, String processed, boolean error) {
+    public void updateSentence(Sentence sentence) {
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = datasource.getConnection();
-            statement = connection.prepareStatement("UPDATE sentiment_analysis.entry SET processed = ?, error = ? WHERE id = ?");
+            statement = connection.prepareStatement("UPDATE sentiment_analysis.entry SET processed = ? WHERE id = ?");
 
-            statement.setString(1, processed);
-            statement.setBoolean(2, error);
-            statement.setInt(3, id);
+            statement.setString(1, sentence.getProcessed());
+            statement.setInt(2, sentence.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Blad podczas akutalizacji zdania o id " + id, e);
+            logger.error("Blad podczas akutalizacji zdania o id " + sentence.getId(), e);
         } finally {
             try {
                 connection.close();

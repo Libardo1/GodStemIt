@@ -6,8 +6,6 @@ import java.util.Set;
 
 public interface DAO {
 
-    Set<Sentence> getNotProcessedStatements(int limit);
-    int countRemainingToProcess();
-    void updateSentence(int id, String processed, boolean error);
-
+    Set<Sentence> getNotProcessedStatements();
+    void updateSentence(Sentence sentence);
 }
