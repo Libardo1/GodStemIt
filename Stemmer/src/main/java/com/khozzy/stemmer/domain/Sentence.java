@@ -6,18 +6,15 @@ public class Sentence {
     protected String original;
     protected String processed = null;
     protected int clazz;
-    protected boolean error;
 
     public Sentence(
             int id,
             String original,
-            int clazz,
-            boolean error) {
+            int clazz) {
 
         this.id = id;
         this.original = original;
         this.clazz = clazz;
-        this.error = error;
     }
 
     public int getId() {

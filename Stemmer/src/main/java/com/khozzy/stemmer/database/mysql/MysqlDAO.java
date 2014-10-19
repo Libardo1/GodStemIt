@@ -37,7 +37,7 @@ public class MysqlDAO implements DAO {
 
         try {
             connection = datasource.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL AND error = 0");
+            statement = connection.prepareStatement("SELECT * FROM sentiment_analysis.entry WHERE processed IS NULL;");
 
             resultSet = statement.executeQuery();
 
@@ -45,8 +45,7 @@ public class MysqlDAO implements DAO {
                 sentences.add(new Sentence(
                         resultSet.getInt("id"),
                         resultSet.getString("original"),
-                        resultSet.getInt("class"),
-                        resultSet.getBoolean("error")
+                        resultSet.getInt("class")
                 ));
             }
         } catch (SQLException e) {

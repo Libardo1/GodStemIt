@@ -6,8 +6,7 @@ CREATE TABLE sentiment_analysis.entry (
   id        INT              NOT NULL AUTO_INCREMENT PRIMARY KEY,
   original  TEXT             NOT NULL,
   processed TEXT,
-  class     INT              NOT NULL,
-  error     BIT(1) DEFAULT 0 NOT NULL
+  class     FLOAT              NOT NULL
 );
 
 INSERT INTO sentiment_analysis.entry (original, class) VALUES
