@@ -17,3 +17,5 @@ Analyze/.Rhistory
 .idea
 *.iml
 
+Analyze/model/
+Analyze/.RData

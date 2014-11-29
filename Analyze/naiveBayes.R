@@ -1,18 +1,28 @@
-naiveBayes <- function(dataset) {
-  ctrl <- trainControl(method = "cv", number = 10, selectionFunction = "best", 
-                       classProbs = TRUE, summaryFunction = twoClassSummary,
-                       verboseIter = TRUE)
+trainNaiveBayes <- function(dataset) {
+  storedModelFile <- "model/naiveBayes.RModel"
   
-  grid <- expand.grid(.fL = 0, .usekernel = FALSE)
-  
-  dataset <- representFeaturesAsFactors(dataset)
-  
-  nb <- train(CLASS ~ ., data = dataset, method = "nb",
-              metric = "ROC", trControl = ctrl, tuneGrid = grid)
+  if (file.exists(storedModelFile)) {
+    message("Loading Naive Bayes model from file")
+    load(storedModelFile)
+  } else {   
+    ctrl <- trainControl(method = "cv", number = 10, selectionFunction = "best", 
+                         classProbs = TRUE, summaryFunction = twoClassSummary,
+                         verboseIter = TRUE)
+    
+    grid <- expand.grid(.fL = 0, .usekernel = FALSE)
+    
+    dataset <- representFeaturesAsFactors(dataset)
+    
+    nb <- train(CLASS ~ ., data = dataset, method = "nb",
+                metric = "ROC", trControl = ctrl, tuneGrid = grid)
+    
+    message("Saving model to file ...")
+    save(nb, file = storedModelFile)
+  }
   
   return (nb)
 }
-
+  
 representFeaturesAsFactors <- function(dataset) {
   classes <- dataset$CLASS
   matrix_data <- apply(dataset[, -which(names(dataset) %in% c("CLASS"))], 

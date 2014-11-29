@@ -1,5 +1,5 @@
 prepareDataset <- function() {
-  dataSetObjectFile <- "sentences.RData"
+  dataSetObjectFile <- "data/sentences.RData"
   message("Checking if file with data exists...")
   
   if (file.exists(dataSetObjectFile)) {
