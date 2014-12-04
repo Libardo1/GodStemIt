@@ -14,24 +14,24 @@ prepareDataset <- function() {
     
     dbSendQuery(sa_db$con, "set names utf8")
     
-    message("Getting all sentences with label 2.0  ...")
-    sentences_20 <- sa_table %>%
+    message("Getting all sentences with label 0.5  ...")
+    sentences_bad <- sa_table %>%
       select(processed, class) %>%
-      filter(class == "2.0") %>%
+      filter(class == "0.5") %>%
       collect()
     
     message("Getting all sentences with label 5.0 ...")
-    sentences_50 <- sa_table %>%
+    sentences_good <- sa_table %>%
       select(processed, class) %>%
       filter(class == "5.0") %>%
       collect()
     
     message("Shuffle sentences with label 5.0 ...")
-    sentences_50 <- sentences_50[order(runif(nrow(sentences_50))),]
+    sentences_good <- sentences_good[order(runif(nrow(sentences_good))),]
     
     message("Balancing the datasets ...")
-    sentences_50 <- sentences_50[1:nrow(sentences_20),]
-    sentences <- rbind(sentences_20, sentences_50)
+    sentences_good <- sentences_good[1:nrow(sentences_bad),]
+    sentences <- rbind(sentences_bad, sentences_good)
       
     # Declare polish stop-words
     stopWords <- c("być", "się", "ale", "asortyment", "była", "były", "cena", "chcieć", "coś", 
@@ -60,7 +60,7 @@ prepareDataset <- function() {
       
     message("Transforming dtm to data-frame ...")
     dataFrame <- as.data.frame(as.matrix(dtm))
-    dataFrame$CLASS <- factor(sentences$class, levels = c(2.0, 5.0), labels = c("NEG", "POS"))  
+    dataFrame$CLASS <- factor(sentences$class, levels = c(0.5, 5.0), labels = c("NEG", "POS"))  
     
     message("Saving data-frame to file ...")
     save(dataFrame, file = dataSetObjectFile)

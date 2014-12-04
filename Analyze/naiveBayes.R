@@ -5,7 +5,7 @@ trainNaiveBayes <- function(dataset) {
     message("Loading Naive Bayes model from file")
     load(storedModelFile)
   } else {   
-    ctrl <- trainControl(method = "cv", number = 10, selectionFunction = "best", 
+    ctrl <- trainControl(method = "cv", number = 2, selectionFunction = "best", 
                          classProbs = TRUE, summaryFunction = twoClassSummary,
                          verboseIter = TRUE)
     
@@ -13,7 +13,7 @@ trainNaiveBayes <- function(dataset) {
     
     dataset <- representFeaturesAsFactors(dataset)
     
-    nb <- train(CLASS ~ ., data = dataset, method = "nb",
+    nb <- train(CLASS ~ ., data = dataset, method = "nb", verbose = TRUE,
                 metric = "ROC", trControl = ctrl, tuneGrid = grid)
     
     message("Saving model to file ...")
