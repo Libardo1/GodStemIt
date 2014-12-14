@@ -1,3 +1,4 @@
+library(plyr)
 library(dplyr)
 library(tm)
 library(caret)
@@ -9,10 +10,11 @@ setwd("/Users/khozzy/GodStemIt/Analyze/")
 source("getRecords.R")
 source("naiveBayes.R")
 source("randomForest.R")
-source("svm.R")
+source("gbm.R")
 
 set.seed(424232)
-registerDoParallel(cores = 2)
+cl <- makeCluster(4, type = "PSOCK", oufile = " ")
+registerDoParallel(cl)
 
 df <- prepareDataset()
 
@@ -25,11 +27,27 @@ testing <- df[-inTrain,]
 message("Training Naive Bayes model ...")
 nb <- trainNaiveBayes(training)
 
-#message("Training Random Forest model ...")
-#rf <- trainRandomForest(training)
+message("Training Random Forest model ...")
+rf <- trainRandomForest(training)
 
-#message("Training linear SVM model ...")
-#svm <- trainLinearSVM(training)
+message("Training GBM model ...")
+gbm <- trainGBM(training)
 
-#message("Training RBF SVM model ...")
-#svm <- trainRadialBasisSVM(training)
+stopCluster(cl)
+
+# MEASURE TIMES
+message("Measuring average times...")
+
+times <- list(nb = vector(), gbm = vector(), rf = vector())
+
+for (i in seq(1, nrow(testing))) {
+  time_nb <- system.time({
+    pp = representFeaturesAsFactors(testing[i,], margin = c(1,2)); 
+    predict(nb, pp)})[2]
+  time_gbm <- system.time(predict(gbm, testing[i,]))[2]
+  time_rf <- system.time(predict(rf, testing[i,]))[2]
+    
+  times$nb <- c(times$nb, time_nb)
+  times$gbm <- c(times$gbm, time_gbm)
+  times$rf <- c(times$rf, time_rf)
+}

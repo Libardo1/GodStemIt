@@ -7,7 +7,7 @@ trainLinearSVM <- function(dataset) {
   } else {
     ctrl <- trainControl(method = "cv", number = 10, selectionFunction = "best", 
                          classProbs = TRUE, summaryFunction =  twoClassSummary,
-                         verboseIter = TRUE)
+                         verboseIter = TRUE, allowParallel = FALSE)
     
     grid_svm <- expand.grid(.C = logseq(2^-15, 2^3, 10))
     
