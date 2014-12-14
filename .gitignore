@@ -20,3 +20,6 @@ Analyze/.Rhistory
 
 Analyze/model/
 Analyze/.RData
+
+IsItGood/build/
+IsItGood/.gradle/
