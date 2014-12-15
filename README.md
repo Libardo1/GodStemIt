@@ -1,42 +1,32 @@
 GodStemIt
 =========
 
-System rozpoznawania emocji (*sentiment analysis*) w języku polskim.
+Repository for storing applications helpful for developing sentiment classification system.
+A SQL [script] (database.sql) with initial data can be used for research purposes.
 
-W jego skład wchodzą poszczególne elementy:
+# Analyze
+R scripts responsible for training a model from data gathered in MySQL database.
 
-- baza danych (MySQL)
-- stemmer (Java JDK 1.8)
-- analiza i uczenie maszynowe (R)
+### Keywords
+R, MySQL, caret package, Naive Bayes, Generalized Boosted Models, Random Forest
 
-##Wstęp
-Większość algorytmów text-miningowych do poprawnego działania wymaga przeprowadzeniu na tekście **stemmingu** (czyli
-redukcji słowa do jego rdzenia albo formy podstawowej). W innych językach jej wykonanie jest standardem. Z uwagi na skomplikowanie
-języka polskiego ciężko jest znaleźć narzędzie radzące sobie z tą operacją. W aplikacji wykorzystano system [Morfologic] (http://morfologik.blogspot.com/)
-w wersji 1.9.0 (wersja z dnia 2014-02-21) stworzone przez dr Marcina Miłkowskiego i dr Dawida Weissa.
- 
-###Baza danych
- Wykorzystanie bazy MySQL jako źródła danych niesie następujące korzyści:
- 
- - brak konieczności eksportu i importu danych w różnych formatach (np. do csv),
- - ujednolicony interfejs,
- - brak redundancji informacji
- 
- 
- Schemat tabeli przechowującej opinie wygląda następująco:
- 
-id | original                                                                     | processed | class | error 
--- | ---------------------------------------------------------------------------- | --------- | ----- | -------
- 1 | Ten produkt bardzo pozytywnie mnie zaskoczył. Na pewno zakupię go ponownie   | NULL      |     1 |       
- 2 | Nie polecam tego sklepu. Fatalna obsługa                                     | NULL      |     0 |       
+# Stemmer
+Java Application performing stemming and pre-processing on sentences stored in MySQL database.
 
+### Keywords
+Java 1.8, MySQL, Maven, Morphologic Dictionary
 
-W kolumnie *original* przechowywana jest oryginalna treść komunikatu, w kolumnie *processed* wartość uzyskana po wykonaniu
-stemmingu, *class* określa czy opinia jest pozytywna bądź negatywna, natomiast *error* wskazuje na bład w obliczeniach 
-(prawdopodbnie problem z danymi w kolumnie *original*)
+### Usage
+    cd Stemmer
+    mvn clean package
+    java -jar target/stemmer-1.0.jar
+    
+# IsItGood
+Java Web Application + R server working together to provide a REST API (protected with OAuth) for predicting sentiments.
 
-###Stemmer
-todo: Tutaj informacje ad. stemmera
+### Keywords
+Java 1.8, Spring Boot, OAuth 2.0, Gradle, R, RServe
 
-###Analiza danych
-todo: I część poświęcona R
+### Usage
+    cd IsItGood
+    gradle clean build bootRun
