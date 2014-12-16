@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class HomeController {
 
@@ -14,7 +16,7 @@ public class HomeController {
     private PredictionService predictionService;
 
     @RequestMapping("/")
-    public String home() throws REXPMismatchException, RserveException {
+    public String home() throws REXPMismatchException, RserveException, IOException {
         predictionService.doSomething();
         return "Not protected resource";
     }
