@@ -20,10 +20,9 @@ public class PredictionService {
     public Sentence predict(final Sentence sentence) throws RserveException, REXPMismatchException, IOException {
 
         loadModelIntoR();
-
         sentence.stem();
 
-        REXP result = RConnection.eval("myFunc()");
+        REXP result = RConnection.eval("class(gbm)");
         System.out.println("result: " + result.asString());
         System.out.println("stemmed sentence: " + sentence.getStemmed());
 
@@ -31,9 +30,9 @@ public class PredictionService {
     }
 
     private void loadModelIntoR() throws RserveException, IOException {
-        ClassPathResource modelResource = new ClassPathResource("R/script.R");
+        ClassPathResource modelResource = new ClassPathResource("R/loadModel.R");
         String filePath = modelResource.getFile().getAbsolutePath();
-        RConnection.eval(String.format("source(\"%s\")", filePath)); // Load R File
+        RConnection.eval(String.format("source(\"%s\")", filePath));
     }
 
 
