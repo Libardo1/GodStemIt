@@ -10,6 +10,6 @@ public class RConfiguration {
 
     @Bean
     public RConnection RConnection() throws RserveException {
-        return new RConnection();
+        return new RConnection("localhost", 6311);
     }
 }
