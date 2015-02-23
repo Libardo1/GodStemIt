@@ -5,11 +5,14 @@ import com.khozzy.isitgood.service.PredictionService;
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.Rserve.RserveException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -23,15 +26,16 @@ public class HomeController {
         return "Not protected resource";
     }
 
-    @RequestMapping("/predict")
-    public Sentence predictDev(@RequestParam("sentence") String original)
+    @RequestMapping(
+            value = "/predict",
+            consumes = "application/json",
+            method = RequestMethod.POST)
+    public ResponseEntity<Sentence> predictDev(@RequestBody @Valid Sentence sentence)
             throws REXPMismatchException, RserveException, IOException {
-
-        Sentence sentence = new Sentence(original);
 
         sentence = predictionService.predict(sentence);
 
-        return sentence;
+        return new ResponseEntity<>(sentence, HttpStatus.OK);
     }
 
 }

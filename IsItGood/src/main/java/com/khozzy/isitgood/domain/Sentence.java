@@ -4,6 +4,7 @@ import morfologik.stemming.Dictionary;
 import morfologik.stemming.DictionaryLookup;
 import morfologik.stemming.WordData;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -13,9 +14,15 @@ public class Sentence {
     private final static Dictionary dictionary = Dictionary.getForLanguage("pl");
     private final static Pattern UNDESIRABLES = Pattern.compile("[,.;!?(){}\\[\\]<>%]");
 
+    @NotNull
     protected String original;
+
     protected String stemmed = null;
+
     protected double posProb = 0.0;
+
+    public Sentence() {
+    }
 
     public Sentence(String original) {
         this.original = original;
