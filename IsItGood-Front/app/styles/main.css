@@ -1,0 +1,25 @@
+/*
+ * Globals
+ */
+
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #555;
+}
+
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/*
+ * Footer
+ */
+
+.footer {
+  padding: 20px 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e5e5e5;
+}
