@@ -1,20 +1,32 @@
 /*
  * Globals
  */
+* {
+  margin: 0;
+}
 
-body {
+html, body {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #555;
+  height: 100%;
 }
 
 .container {
-  padding-top: 20px;
+  padding-top: 50px;
   padding-bottom: 20px;
+
+  min-height: 100%;
+  margin-bottom: -142px;
 }
 
-/*
- * Footer
- */
+.container:after {
+  content: "";
+  display: block;
+}
+
+.footer, .container:after {
+  height: 142px;
+}
 
 .footer {
   padding: 20px 0;

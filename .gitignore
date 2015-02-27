@@ -23,3 +23,6 @@ Analyze/.RData
 
 IsItGood/build/
 IsItGood/.gradle/
+
+IsItGood-Front/node_modules
+IsItGood-Front/app/bower_components

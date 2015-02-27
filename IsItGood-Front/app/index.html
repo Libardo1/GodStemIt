@@ -26,52 +26,73 @@
           <div class="row">
             <div class="col-sm-6">
               <h1>Czy to dobre?</h1>
-              <h3>Wpisz zdanie obok i sam się przekonaj</h3>
+              <h3>Wklej opinię obok i sam się przekonaj</h3>
               <p>Wykorzystujemy tu doprawdy zaawansowane technologie...</p>
             </div>
 
             <div class="col-sm-6">
               <div class="interactive" ng-controller="PredictionController">
                 <div class="row">
-                  <textarea rows=6 cols=70 ng-model="sentence" ng-click="wipe()" ng-change="predict()">
-
+                  <textarea class="col-xs-12" rows=6 ng-model="sentence" ng-click="wipe()" ng-change="predict()">
                   </textarea>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="prob && mood">
                   <div class="col-sm-6">
                     {{mood}}
                   </div>
+
                   <div class="col-sm-6">
-                    {{prob}}%
+                    <div justgage
+                           title="{{title}}" title-font-color="{{titleFontColor}}"
+                           value="{{value}}" value-font-color="{{valueFontColor}}"
+                           width="{{width}}" height="{{height}}" relative-gauge-size="{{relativeGaugeSize}}"
+                           value-min-font-size="{{valueMinFontSize}}" title-min-font-size="{{titleMinFontSize}}"
+                           label-min-font-size="{{labelMinFontSize}}" min-label-min-font-size="{{minLabelMinFontSize}}"
+                           maxLabelMinFontSize="{{maxLabelMinFontSize}}"
+                           min="{{min}}" max="{{max}}"
+                           hide-min-max="{{hideMinMax}}" hide-value="{{hideValue}}" hide-inner-shadow="{{hideInnerShadow}}"
+                           gauge-width-scale="{{gaugeWidthScale}}" gauge-color="{{gaugeColor}}"
+                           show-inner-shadow="{{showInnerShadow}}" shadow-opacity="{{shadowOpacity}}"
+                           shadow-size="{{shadowSize}}" shadow-vertical-offset="{{shadowVerticalOffset}}"
+                           level-colors="{{levelColors}}" custom-sectors="{{customSectors}}" no-gradient="{{noGradient}}"
+                           label="{{label}}" label-font-color="{{labelFontColor}}"
+                           start-animation-time="{{startAnimationTime}}" start-animation-type="{{startAnimationType}}"
+                           refresh-animation-time="{{refreshAnimationTime}}" refresh-animation-type="{{refreshAnimationType}}"
+                           donut="{{donut}}" donut-start-angle="{{donutStartAngle}}"
+                           counter="{{counter}}" decimals="{{decimals}}" symbol="{{symbol}}" format-number="{{formatNumber}}"
+                           human-friendly="{{humanFriendly}}" human-friendly-decimal="{{humanFriendlyDecimal}}"
+                           text-renderer="textRenderer()"></div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
 
-    <footer class="footer">
-      <p>Awesomeness by <a href="https://twitter.com/don_khozzy">@don_khozzy</a></p>
-      <p>Poland 2015</p>
-    </footer>
+      <footer class="footer">
+        <p>Awesomeness by <a href="https://twitter.com/don_khozzy">@don_khozzy</a>, Poland 2015</p>
+      </footer>
 
     <div style="display:none">
-    <oauth
-    site="OAUTH_SERVER_URI_HERE"
-    client-id="CLIENT_ID_HERE"
-    redirect-uri="REDIRECT_URI_HERE"
-    profile-uri="PROFILE_URI_HERE"
-    scope="SCOPE_HERE">
-    </oauth>
+      <oauth
+        site="OAUTH_SERVER_URI_HERE"
+        client-id="CLIENT_ID_HERE"
+        redirect-uri="REDIRECT_URI_HERE"
+        profile-uri="PROFILE_URI_HERE"
+        scope="SCOPE_HERE">
+      </oauth>
     </div>
 
     <!-- bower:js -->
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/raphael/raphael.js"></script>
+    <script src="bower_components/justgage-bower/justgage.js"></script>
+    <script src="bower_components/angular-gage/dist/angular-gage.js"></script>
     <!-- endbower -->
 
     <!-- build:js({.tmp,app}) oauth-ng.js -->
@@ -86,7 +107,7 @@
     <script src="scripts/modules/prediction.js"></script>
 
     <script>
-      var app = angular.module('app', ['oauth']);
+      var app = angular.module('app', ['oauth','frapontillo.gage']);
 
       angular.module('app').config(function($locationProvider) {
         $locationProvider.html5Mode(true).hashPrefix('!');
