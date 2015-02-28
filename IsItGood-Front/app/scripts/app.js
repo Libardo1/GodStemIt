@@ -86,6 +86,7 @@ app.controller('PredictionController',function($scope){
     console.log("Calling prediction for: " + $scope.sentence)
     $scope.prob = $scope.sentence.length + 50 % 100 // dummy
     $scope.mood = "POZYTYWNIE" // dummy
+    $scope.moodclass = "fa-thumbs-o-up";
     $scope.value = $scope.prob;
 
   }
