@@ -39,7 +39,7 @@
                 </div>
                 <div class="row" ng-show="prob && mood">
                   <div class="col-sm-6">
-                    <div class="mood-wrapper">
+                    <div class="mood-wrapper" style="color: {{color}}">
 
                       <i class="fa {{moodclass}} fa-5x pull-left"></i>
                       <div class="mood pull-right">
@@ -101,6 +101,7 @@
     <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/justgage-bower/justgage.js"></script>
     <script src="bower_components/angular-gage/dist/angular-gage.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
     <!-- endbower -->
 
     <!-- build:js({.tmp,app}) oauth-ng.js -->

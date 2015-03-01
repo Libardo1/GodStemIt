@@ -14,7 +14,7 @@ angular.module('oauth').config(['$locationProvider','$httpProvider',
     $httpProvider.interceptors.push('ExpiredInterceptor');
   }]);
 
-app.controller('PredictionController',function($scope){
+app.controller('PredictionController',function($scope, $http){
   $scope.sentence = 'Wpisz tutaj jakieś głupie zdanie...';
 
   $scope.title = "Prawdopodobieństwo";
@@ -84,10 +84,32 @@ app.controller('PredictionController',function($scope){
 
   $scope.predict = function() {
     console.log("Calling prediction for: " + $scope.sentence)
-    $scope.prob = $scope.sentence.length + 50 % 100 // dummy
-    $scope.mood = "POZYTYWNIE" // dummy
-    $scope.moodclass = "fa-thumbs-o-up";
-    $scope.value = $scope.prob;
+
+    $http({
+      url: 'http://localhost:8080/predict',
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({original: 'Nigdy w życiu nie wejdę ponownie do tego sklepu'})
+    }).success(function(data) {
+      var positiveness = data['posProb'];
+      var probability = 0.5 + Math.abs(0.5 - positiveness);
+
+      console.log("rec: " + data['posProb'])
+      console.log("prob: " + probability)
+
+      $scope.prob = probability * 100;
+      $scope.value = Math.round($scope.prob * 100) / 100;
+
+      if (positiveness < 0.5) {
+        $scope.mood = "NEGATYWNIE";
+        $scope.moodclass = "fa-thumbs-o-down";
+        $scope.color = 'red';
+      } else {
+        $scope.mood = "POZYTYWNIE"
+        $scope.moodclass = "fa-thumbs-o-up";
+        $scope.color = 'green';
+      }
+    })
 
   }
 
