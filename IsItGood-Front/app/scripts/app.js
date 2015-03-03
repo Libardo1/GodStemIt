@@ -18,7 +18,7 @@ app.controller('PredictionController',function($scope, $http){
   $scope.sentence = 'Wpisz tutaj jakieś głupie zdanie...';
 
   $scope.title = "Prawdopodobieństwo";
-  $scope.titleFontColor = 'gray';
+  $scope.titleFontColor = 'DarkSlateGray';
   $scope.valueFontColor = 'black';
   $scope.min = 50;
   $scope.max = 100;
@@ -59,7 +59,7 @@ app.controller('PredictionController',function($scope, $http){
   ];
   $scope.noGradient = false;
   $scope.label = 'pewności predykcji';
-  $scope.labelFontColor = 'gray';
+  $scope.labelFontColor = 'DarkSlateGray';
   $scope.startAnimationTime = 0;
   $scope.startAnimationType = undefined;
   $scope.refreshAnimationTime = undefined;

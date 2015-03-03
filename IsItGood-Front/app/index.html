@@ -34,8 +34,16 @@
             <div class="col-sm-6">
               <div class="interactive" ng-controller="PredictionController">
                 <div class="row">
-                  <textarea class="col-xs-12" rows=6 ng-model="sentence" ng-click="wipe()" ng-change="predict()">
+                  <textarea class="col-xs-12" rows=6 ng-model="sentence" ng-click="wipe()">
                   </textarea>
+                </div>
+                <div class="row">
+                  <a id = "checkBtn" class="btn btn-primary pull-right" href="#" ng-click="predict()">
+                    <i class="fa fa-cogs fa-lg"></i> Sprawdź
+                  </a>
+                  <a id = "resetBtn" class="btn btn-sm btn-warning pull-right" href="#" ng-click="wipe()">
+                    <i class="fa fa-eraser fa-lg"></i> Reset
+                  </a>
                 </div>
                 <div class="row" ng-show="prob && mood">
                   <div class="col-sm-6">
@@ -101,7 +109,6 @@
     <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/justgage-bower/justgage.js"></script>
     <script src="bower_components/angular-gage/dist/angular-gage.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
     <!-- endbower -->
 
     <!-- build:js({.tmp,app}) oauth-ng.js -->
