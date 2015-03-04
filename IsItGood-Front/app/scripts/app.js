@@ -81,6 +81,8 @@ app.controller('PredictionController',function($scope, $http){
     $scope.sentence = '';
     $scope.mood = '-';
     $scope.prob = 0;
+    $scope.errorHappend = false;
+    $scope.successfulRequest = null;
   }
 
   $scope.predict = function() {
@@ -100,6 +102,7 @@ app.controller('PredictionController',function($scope, $http){
 
       $scope.prob = probability * 100;
       $scope.value = Math.round($scope.prob * 100) / 100;
+      $scope.successfulRequest = true;
 
       if (positiveness < 0.5) {
         $scope.mood = "NEGATYWNIE";
@@ -110,6 +113,9 @@ app.controller('PredictionController',function($scope, $http){
         $scope.moodclass = "fa-thumbs-o-up";
         $scope.color = 'green';
       }
+    }).error(function(data) {
+      $scope.successfulRequest = false;
+      $scope.errorHappend = true;
     })
 
   }

@@ -46,7 +46,8 @@
                     <i class="fa fa-eraser fa-lg"></i> Reset
                   </a>
                 </div>
-                <div class="row" ng-show="prob && mood">
+
+                <div class="row" ng-show="successfulRequest">
                   <div class="col-sm-6">
                     <div class="mood-wrapper" style="color: {{color}}">
 
@@ -81,6 +82,13 @@
                            text-renderer="textRenderer()"></div>
                   </div>
                 </div>
+
+                <div class="row" ng-show="!successfulRequest && errorHappend">
+                  <div class="col-sm-12 alert alert-danger">
+                      Błąd podczas próby połączenia z serwerem.
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
