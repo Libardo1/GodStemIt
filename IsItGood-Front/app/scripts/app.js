@@ -6,7 +6,8 @@ var app = angular.module('oauth', [
   'oauth.accessToken',    // access token service
   'oauth.endpoint',       // oauth endpoint service
   'oauth.profile',        // profile model
-  'oauth.interceptor'     // bearer token interceptor
+  'oauth.interceptor',     // bearer token interceptor
+  'angular-loading-bar'
 ]);
 
 angular.module('oauth').config(['$locationProvider','$httpProvider',
@@ -89,7 +90,7 @@ app.controller('PredictionController',function($scope, $http){
       url: 'http://localhost:8080/predict',
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      data: JSON.stringify({original: 'Nigdy w życiu nie wejdę ponownie do tego sklepu'})
+      data: JSON.stringify({original: $scope.sentence})
     }).success(function(data) {
       var positiveness = data['posProb'];
       var probability = 0.5 + Math.abs(0.5 - positiveness);

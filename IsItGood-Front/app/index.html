@@ -13,6 +13,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -34,7 +35,7 @@
             <div class="col-sm-6">
               <div class="interactive" ng-controller="PredictionController">
                 <div class="row">
-                  <textarea class="col-xs-12" rows=6 ng-model="sentence" ng-click="wipe()">
+                  <textarea class="col-xs-12" rows=8 ng-model="sentence" ng-click="wipe()">
                   </textarea>
                 </div>
                 <div class="row">
@@ -109,6 +110,7 @@
     <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/justgage-bower/justgage.js"></script>
     <script src="bower_components/angular-gage/dist/angular-gage.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <!-- endbower -->
 
     <!-- build:js({.tmp,app}) oauth-ng.js -->
