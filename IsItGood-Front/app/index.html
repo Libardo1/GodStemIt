@@ -21,7 +21,7 @@
     <!-- endbuild -->
     <link rel="stylesheet" href="font-awesome-4.3-2.0/css/font-awesome.min.css">
   </head>
-  <body ng-app="app">
+  <body ng-app="myApp">
 
     <div class="container">
 
@@ -98,16 +98,6 @@
         <p>Awesomeness by <a href="https://twitter.com/don_khozzy">@don_khozzy</a>, Poland 2015</p>
       </footer>
 
-    <div style="display:none">
-      <oauth
-        site="OAUTH_SERVER_URI_HERE"
-        client-id="CLIENT_ID_HERE"
-        redirect-uri="REDIRECT_URI_HERE"
-        profile-uri="PROFILE_URI_HERE"
-        scope="SCOPE_HERE">
-      </oauth>
-    </div>
-
     <!-- bower:js -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/jquery/jquery.js"></script>
@@ -121,24 +111,7 @@
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <!-- endbower -->
 
-    <!-- build:js({.tmp,app}) oauth-ng.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/services/access-token.js"></script>
-    <script src="scripts/services/endpoint.js"></script>
-    <script src="scripts/services/profile.js"></script>
-    <script src="scripts/interceptors/oauth-interceptor.js"></script>
-    <script src="scripts/directives/oauth.js"></script>
-    <!-- endbuild -->
-
-    <script src="scripts/modules/prediction.js"></script>
-
-    <script>
-      var app = angular.module('app', ['oauth','frapontillo.gage']);
-
-      angular.module('app').config(function($locationProvider) {
-        $locationProvider.html5Mode(true).hashPrefix('!');
-      });
-    </script>
 
 </body>
 </html>
