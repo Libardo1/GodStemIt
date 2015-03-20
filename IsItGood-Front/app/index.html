@@ -27,15 +27,18 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <h1>Czy to dobre?</h1>
-              <h3>Wklej opinię obok i sam się przekonaj</h3>
-              <p>Wykorzystujemy tu doprawdy zaawansowane technologie...</p>
+              <h1 id="header">Czy To Dobre?</h1>
+              <h4 id="intro">Automatyczna analiza opinii</h4>
+              <p id="details">Analizując występowanie ponad <strong>1000 unikalnych słów</strong> z ponad <strong>30 000 opinii</strong> nauczyłem się rozpoznawać czy zdanie
+              ma <span style="color: #2B803E">pozytywny</span> czy <span style="color: #AA4439">negatywny</span> charakter</p>
+              <p id="accuracy">Z 93.5% dokładnością</p>
+              <p id="checkme">Sprawdź mnie</p>
             </div>
 
             <div class="col-sm-6">
               <div class="interactive" ng-controller="PredictionController">
                 <div class="row">
-                  <textarea class="col-xs-12" rows=8 ng-model="sentence" ng-click="wipe()">
+                  <textarea id="inputText" class="col-xs-12" rows=8 ng-model="sentence" ng-click="wipe()">
                   </textarea>
                 </div>
                 <div class="row">
@@ -95,7 +98,8 @@
         </div>
 
       <footer class="footer">
-        <p>Awesomeness by <a href="https://twitter.com/don_khozzy">@don_khozzy</a>, Poland 2015</p>
+        <p>Awesomeness by <a href="https://twitter.com/don_khozzy">@don_khozzy</a>, Poland 2015 <image id="poland" src="images/poland.gif" /></p>
+        <small>Technical details can be found <a href="#">here</a>.</small>
       </footer>
 
     <!-- bower:js -->

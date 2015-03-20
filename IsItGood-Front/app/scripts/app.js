@@ -10,8 +10,8 @@ app.controller('PredictionController',function($scope, $http){
   $scope.sentence = 'Wpisz tutaj jakieś głupie zdanie...';
 
   $scope.title = "Prawdopodobieństwo";
-  $scope.titleFontColor = 'DarkSlateGray';
-  $scope.valueFontColor = 'black';
+  $scope.titleFontColor = '#D1E2E5';
+  $scope.valueFontColor = '#D1E2E5';
   $scope.min = 50;
   $scope.max = 100;
   $scope.valueMinFontSize = undefined;
@@ -26,7 +26,7 @@ app.controller('PredictionController',function($scope, $http){
   $scope.height = undefined;
   $scope.relativeGaugeSize = undefined;
   $scope.gaugeWidthScale = 0.5;
-  $scope.gaugeColor = 'grey';
+  $scope.gaugeColor = '#D1E2E5';
   $scope.showInnerShadow = true;
   $scope.shadowOpacity = 0.5;
   $scope.shadowSize = 3;
@@ -51,7 +51,7 @@ app.controller('PredictionController',function($scope, $http){
   ];
   $scope.noGradient = false;
   $scope.label = 'pewności predykcji';
-  $scope.labelFontColor = 'DarkSlateGray';
+  $scope.labelFontColor = '#D1E2E5';
   $scope.startAnimationTime = 0;
   $scope.startAnimationType = undefined;
   $scope.refreshAnimationTime = undefined;
@@ -98,11 +98,11 @@ app.controller('PredictionController',function($scope, $http){
       if (positiveness < 0.5) {
         $scope.mood = "NEGATYWNIE";
         $scope.moodclass = "fa-thumbs-o-down";
-        $scope.color = 'red';
+        $scope.color = '#AA4439';
       } else {
         $scope.mood = "POZYTYWNIE"
         $scope.moodclass = "fa-thumbs-o-up";
-        $scope.color = 'green';
+        $scope.color = '#2B803E';
       }
     }).error(function(data) {
       $scope.successfulRequest = false;
